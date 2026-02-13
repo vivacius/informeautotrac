@@ -94,9 +94,9 @@ def process_8h_data(file_6_2, file_2_10, file_10_6, file_alces):
         lambda row: row['autotrac_activo_h'] / row['utilizacion_cosecha_h'] if row['utilizacion_cosecha_h'] > 0 else 0, axis=1
     )
 
-    # Replicar lógica de R: si >1 o NA, entonces NA
-    df_completo.loc[df_completo['autotrac_activo_pct'] > 1, 'autotrac_activo_pct'] = np.nan
-
+    # Ajuste: si > 1, se pone 0.95 (95%) en lugar de NA
+    df_completo.loc[df_completo['autotrac_activo_pct'] > 1, 'autotrac_activo_pct'] = 0.95
+    
     # Merge with Alces
     cols_alces = df_alces.columns
     alce_map = {}
@@ -213,3 +213,4 @@ def calculate_global_stats(df):
     global_stats['alce'] = 'Global'
     
     return global_stats
+
