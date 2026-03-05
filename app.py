@@ -263,8 +263,8 @@ if st.session_state.processed_data is not None:
         </div>
         <div class="card">
             <div class="card-label">AutoTrac™ Global</div>
-            <div class="card-value" style="color: {'#27ae60' if avg_autotrac >= 0.9 else '#e74c3c'}">{avg_autotrac:.1%}</div>
-            <div class="card-subtext">Meta de Desempeño: 90%</div>
+            <div class="card-value" style="color: {'#27ae60' if avg_autotrac >= 0.8 else '#e74c3c'}">{avg_autotrac:.1%}</div>
+            <div class="card-subtext">Meta de Desempeño: 80%</div>
         </div>
         <div class="card">
             <div class="card-label">Horas Totales</div>
@@ -289,7 +289,7 @@ if st.session_state.processed_data is not None:
         st.markdown('<h2 style="color: #1e293b; margin-bottom: 1.5rem;">🌎 Rendimiento Global de la Flota</h2>', unsafe_allow_html=True)
         
         # Insight automático
-        machines_above_target = (data.groupby('maquina')['autotrac_activo_pct'].mean() >= 0.9).sum()
+        machines_above_target = (data.groupby('maquina')['autotrac_activo_pct'].mean() >= 0.8).sum()
         total_machines_unique = data['maquina'].nunique()
         machines_zero = (data.groupby('maquina')['autotrac_activo_pct'].mean() == 0).sum()
         
@@ -301,13 +301,13 @@ if st.session_state.processed_data is not None:
                         box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);">
                 <strong style="font-size: 1.1rem;">💡 Insight:</strong><br>
                 <span style="font-size: 1.3rem; font-weight: 700;">{machines_above_target}</span> de {total_machines_unique} máquinas 
-                ({machines_above_target/total_machines_unique*100:.0f}%) superan la meta del 90%
+                ({machines_above_target/total_machines_unique*100:.0f}%) superan la meta del 80%
             </div>
             """, unsafe_allow_html=True)
         with col_insight2:
-            performance_emoji = "🎯" if avg_autotrac >= 0.9 else "⚠️"
+            performance_emoji = "🎯" if avg_autotrac >= 0.8 else "⚠️"
             st.markdown(f"""
-            <div style="background: {'#27ae60' if avg_autotrac >= 0.9 else '#e74c3c'}; 
+            <div style="background: {'#27ae60' if avg_autotrac >= 0.8 else '#e74c3c'}; 
                         padding: 1.2rem; border-radius: 12px; color: white; text-align: center;
                         box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
                 <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">{performance_emoji}</div>
@@ -362,7 +362,7 @@ if st.session_state.processed_data is not None:
                 machines_zero_alce = (df_alce.groupby('maquina')['autotrac_activo_pct'].mean() == 0).sum()
                 
                 # Contenedor con borde prominente
-                border_color = '#27ae60' if avg_alce >= 0.9 else '#e74c3c'
+                border_color = '#27ae60' if avg_alce >= 0.8 else '#e74c3c'
                 st.markdown(f"""
                 <div style="background: white; 
                             padding: 1.5rem; 
@@ -377,8 +377,8 @@ if st.session_state.processed_data is not None:
                         <h3 style="margin: 0; color: #1e293b; font-size: 1.4rem;">
                             🏭 Alce {alce}
                         </h3>
-                        <div style="background: {'#d4edda' if avg_alce >= 0.9 else '#f8d7da'}; 
-                                    color: {'#155724' if avg_alce >= 0.9 else '#721c24'}; 
+                        <div style="background: {'#d4edda' if avg_alce >= 0.8 else '#f8d7da'}; 
+                                    color: {'#155724' if avg_alce >= 0.8 else '#721c24'}; 
                                     padding: 0.6rem 1.2rem; border-radius: 25px; 
                                     font-weight: 700; font-size: 1rem;
                                     box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
@@ -466,3 +466,4 @@ else:
         <img src="https://tecnicana.org/wp-content/uploads/2025/09/image-8.png" style="border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin-top: 2rem; width: 60%;">
     </div>
     """, unsafe_allow_html=True)
+
