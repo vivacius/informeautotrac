@@ -102,7 +102,7 @@ def create_alce_chart(df, alce_name, shift_type):
             textposition='auto'
         ))
             
-    fig.add_hline(y=0.9, line_dash="dash", line_color="#e74c3c", annotation_text="Meta", annotation_position="top left")
+    fig.add_hline(y=0.8, line_dash="dash", line_color="#e74c3c", annotation_text="Meta 80%", annotation_position="top left")
 
     fig.update_layout(
         title=f"Desempeño Alce {alce_name}",
@@ -114,4 +114,5 @@ def create_alce_chart(df, alce_name, shift_type):
     )
 
     return fig
+
 
