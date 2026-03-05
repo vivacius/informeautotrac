@@ -83,7 +83,7 @@ def create_static_chart(df, title, shift_type):
     ax.set_xticks(x + width * (len(turnos) - 1) / 2)
     ax.set_xticklabels(machines, rotation=45, ha='right', fontsize=9)
     ax.legend(loc='upper right', framealpha=0.9)
-    ax.axhline(y=0.9, color='r', linestyle='--', linewidth=2, label='Meta 90%')
+    ax.axhline(y=0.8, color='r', linestyle='--', linewidth=2, label='Meta 80%')
     ax.set_ylim(0, 1.05)
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, _: f'{y*100:.0f}%'))
     ax.grid(axis='y', alpha=0.3, linestyle='--')
@@ -125,15 +125,15 @@ def generate_pdf(processed_data, global_stats, shift_type):
     
     # Calcular máquinas sin uso
     machines_zero = (processed_data.groupby('maquina')['autotrac_activo_pct'].mean() == 0).sum()
-    machines_above_target = (processed_data.groupby('maquina')['autotrac_activo_pct'].mean() >= 0.9).sum()
+    machines_above_target = (processed_data.groupby('maquina')['autotrac_activo_pct'].mean() >= 0.8).sum()
     
     summary_text = (
         f"Este informe presenta un analisis detallado del uso de la tecnologia AutoTrac(TM) en la flota de maquinaria. "
         f"Se han monitoreado un total de {total_machines} maquinas, acumulando {total_hours:,.1f} horas de operacion.\n\n"
         f"El promedio global de uso de AutoTrac(TM) es del {avg_autotrac:.1%}. "
-        f"La meta establecida es del 90%.\n\n"
+        f"La meta establecida es del 80%.\n\n"
         f"HALLAZGOS CLAVE:\n"
-        f"- {machines_above_target} maquinas ({machines_above_target/total_machines*100:.0f}%) superan la meta del 90%\n"
+        f"- {machines_above_target} maquinas ({machines_above_target/total_machines*100:.0f}%) superan la meta del 80%\n"
     )
     
     if machines_zero > 0:
@@ -179,7 +179,7 @@ def generate_pdf(processed_data, global_stats, shift_type):
         min_machine = df_alce.loc[df_alce['autotrac_activo_pct'].idxmin(), 'maquina'] if not df_alce.empty else 'N/A'
         min_value = df_alce['autotrac_activo_pct'].min() if not df_alce.empty else 0
         machines_count = df_alce['maquina'].nunique()
-        above_target = (df_alce['autotrac_activo_pct'] >= 0.9).sum()
+        above_target = (df_alce['autotrac_activo_pct'] >= 0.8).sum()
         machines_zero_alce = (df_alce.groupby('maquina')['autotrac_activo_pct'].mean() == 0).sum()
         
         # Texto de análisis
@@ -195,7 +195,7 @@ def generate_pdf(processed_data, global_stats, shift_type):
             analysis_text = (
                 f"El alce {alce} cuenta con {machines_count} maquinas en operacion. "
                 f"El promedio de uso de AutoTrac es del {avg_alce:.1%}. "
-                f"{above_target} maquinas superan la meta del 90%. "
+                f"{above_target} maquinas superan la meta del 80%. "
                 f"ATENCION: {machines_zero_alce} maquina(s) NO utilizaron AutoTrac(TM). "
                 f"La maquina con mejor desempeno es {max_machine} ({max_value:.1%})."
             )
@@ -203,7 +203,7 @@ def generate_pdf(processed_data, global_stats, shift_type):
             analysis_text = (
                 f"El alce {alce} cuenta con {machines_count} maquinas en operacion. "
                 f"El promedio de uso de AutoTrac es del {avg_alce:.1%}. "
-                f"{above_target} maquinas superan la meta del 90%. "
+                f"{above_target} maquinas superan la meta del 80%. "
                 f"La maquina con mejor desempeno es {max_machine} ({max_value:.1%}), "
                 f"mientras que {min_machine} presenta el menor uso ({min_value:.1%})."
             )
@@ -229,7 +229,7 @@ def generate_pdf(processed_data, global_stats, shift_type):
         pdf.set_font('Arial', '', 10)
         pdf.set_text_color(0)
         
-        if avg_alce < 0.9:
+        if avg_alce < 0.8:
             recommendation = f"- Reforzar capacitacion en el uso de AutoTrac para operadores del alce {alce}.\n- Revisar configuracion de equipos con bajo rendimiento."
         else:
             recommendation = f"- Mantener las practicas actuales que han resultado en un excelente desempeno.\n- Compartir mejores practicas con otros alces."
@@ -251,3 +251,4 @@ def generate_pdf(processed_data, global_stats, shift_type):
     if isinstance(output, str):
         return output.encode('latin-1')
     return output
+
