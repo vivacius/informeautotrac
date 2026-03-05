@@ -51,8 +51,8 @@ def create_global_chart(df, global_stats, shift_type):
             textposition='auto'
         ))
 
-    # Add Target Line (90%)
-    fig.add_hline(y=0.9, line_dash="dash", line_color="#e74c3c", annotation_text="Meta 90%", annotation_position="top left")
+    # Add Target Line (80%)
+    fig.add_hline(y=0.8, line_dash="dash", line_color="#e74c3c", annotation_text="Meta 80%", annotation_position="top left")
 
     # Add Global Average Line
     mean_global = global_stats['autotrac_activo_pct'].mean()
@@ -114,3 +114,4 @@ def create_alce_chart(df, alce_name, shift_type):
     )
 
     return fig
+
